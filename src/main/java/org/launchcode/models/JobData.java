@@ -3,6 +3,8 @@ package org.launchcode.models;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+
+//import org.apache.commons.text.WordUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
 
 /**
  * Created by LaunchCode
@@ -56,7 +59,16 @@ public class JobData {
         loadData();
 
         // Bonus mission; normal version returns allJobs
-        return new ArrayList<>(allJobs);
+/*        ArrayList<HashMap<String, String>> retValue = new ArrayList<>();
+        for (HashMap<String, String> eachJob : allJobs) {
+            HashMap<String, String> eachJobsCaps = new HashMap<>();
+            for (String eachKey : eachJob.keySet()) {
+                eachJobsCaps.put(WordUtils.capitalize(eachKey), eachJob.get(eachKey));
+            }
+            retValue.add(eachJobsCaps);
+        }
+        return retValue; */
+        return (ArrayList) allJobs.clone();
     }
 
     /**
@@ -82,6 +94,7 @@ public class JobData {
             String aValue = row.get(column);
 
             if (aValue != null && aValue.toLowerCase().contains(value.toLowerCase())) {
+
                 jobs.add(row);
             }
         }

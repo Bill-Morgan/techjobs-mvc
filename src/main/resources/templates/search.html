@@ -20,7 +20,7 @@
                         name="searchType"
                         th:id="${column.key}"
                         th:value="${column.key}"
-                        th:checked="${column.key == 'all'}"/>
+                        th:checked="${column.key == searchType}"/>
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
 
@@ -28,7 +28,7 @@
 
         <p>
             <label for="searchTerm">Keyword:</label>
-            <input type="text" name="searchTerm" id="searchTerm" />
+            <input type="text" name="searchTerm" id="searchTerm" th:value="${searchTerm}"/>
         </p>
 
         <input type="submit" value="Search" />
@@ -36,7 +36,26 @@
 
     <hr />
 
-    <!-- TODO #2 - Loop over jobs map to display all job fields -->
+    <h3 th:if="${jobs}" ><span th:text="${jobs.size()} + ' Result(s)'"></span></h3>
+
+    <div th:if="${jobs} and ${jobs.size()}">
+        <div th:each="eachJob : ${jobs}">
+            <table class="job-listing">
+                <tr th:each="eachHash : ${eachJob}">
+                    <td th:text="${#strings.capitalizeWords(eachHash.getKey())}" ></td>
+<!--                    <td th:text="${eachHash.getValue()}"></td> -->
+                    <td>
+                        <span th:if="${eachHash.getKey() == 'name'}" th:text="${eachHash.getValue()}"></span>
+                        <span th:unless="${eachHash.getKey() == 'name'}"><a th:href="@{/search/results(searchType=${eachHash.getKey()},searchTerm=${eachHash.getValue()})}" th:text="${eachHash.getValue()}"></a></span>
+                    </td>
+
+                 </tr>
+            </table>
+            <br />
+        </div>
+    </div>
+
+
 
 </div>
 
